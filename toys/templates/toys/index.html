@@ -1,0 +1,14 @@
+{% extends "toys/main.html" %}
+
+{% block title%}{{ title }}{% endblock %}
+
+
+{% block content%}
+
+<form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+</form>
+
+{% endblock %}
