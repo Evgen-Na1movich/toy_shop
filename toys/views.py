@@ -3,17 +3,29 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core.checks import messages
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.decorators.cache import cache_page
+
+from toys.models import Category
+
+
+@method_decorator(cache_page(5), name='dispatch')
+    #кэшіруем старонку
+class CategoriesView(View):
+    def get(self, request):
+        data = {'title': 'Крама цацак', 'cats': Category.objects.all()}
+        return render(request, 'toys/index.html', context=data)
 
 
 def index(request):  # HttpRequest
-    data = {'title': 'Shop toys'}
+    data = {'title': 'Крама цацак'}
     return render(request, 'toys/main.html', context=data)
     # return HttpResponse('Страница приложения toys.')
 
 
 def page_not_found(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена</h1')
+    return HttpResponseNotFound('<h1>Старонка не знойдзена</h1')
 
 
 class Login(View):
